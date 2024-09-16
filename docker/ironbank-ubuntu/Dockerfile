@@ -31,7 +31,9 @@ RUN wget https://cran.r-project.org/src/base/R-4/R-${R_VERSION}.tar.gz && \
 FROM $BASE_IMAGE AS dependencies
 
 # Install only runtime dependencies
-RUN apt-get update -y  && apt-get install -y \
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=America/New_York
+RUN apt-get update -y  && apt-get install -y --no-install-recommends \
     libreadline-dev libx11-dev libxt-dev libpng-dev libjpeg-dev \
     libcairo2-dev libbz2-dev liblzma-dev libpcre2-dev \
     libcurl4-openssl-dev libssl-dev libxml2-dev zlib1g-dev \
