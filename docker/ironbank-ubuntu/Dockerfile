@@ -7,7 +7,7 @@ FROM $BASE_IMAGE AS build-r
 
 # Set environment variables
 ENV R_VERSION=4.4.1
-ENV R_HOME=/usr/local
+ENV R_HOME=/usr/local/bin/R
 
 # Install required dependencies
 RUN apt-get update -y && apt-get install -y build-essential gfortran libreadline-dev libx11-dev libxt-dev \
@@ -37,5 +37,5 @@ RUN apt-get update -y  && apt-get install -y \
     rm -rf /var/lib/apt/lists/*
 
 # Copy R binaries from the build stage
-COPY --from=build-r /usr/local /usr/local
+COPY --from=build-r /usr/local/bin/* /usr/local/bin/
 
