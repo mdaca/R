@@ -40,7 +40,7 @@ jobs:
           REGISTRY=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
 
           # Build the Docker image
-          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+          docker build -f docker/ironbank-ubuntu/Dockerfile -t $REGISTRY/$REPOSITORY:$IMAGE_TAG docker/ironbank-ubuntu
 
           # Push the Docker image
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
