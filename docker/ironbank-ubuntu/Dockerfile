@@ -12,7 +12,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=America/New_York
 
 # Install required dependencies
-RUN apt-get update -y && apt-get install -y build-essential gfortran libreadline-dev libx11-dev libxt-dev \
+RUN apt-get update -y && \
+    apt-get install -y build-essential gfortran libreadline-dev libx11-dev libxt-dev \
     libpng-dev libjpeg-dev libcairo2-dev libbz2-dev liblzma-dev libpcre2-dev \
     libcurl4-openssl-dev libssl-dev texinfo texlive texlive-fonts-extra \
     texlive-fonts-recommended texlive-latex-extra libxml2-dev libsqlite3-dev \
