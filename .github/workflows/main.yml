@@ -99,10 +99,10 @@ jobs:
           ECR_REPOSITORY: mdaca/base-images/ironbank-ubuntu-r
         run: |
           syft $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
-          syft $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG  > jupyter-http-proxy.tf
+          syft $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG  > ubuntu-r-sbom.tf
 
       - name: Upload SBOM
         uses: actions/upload-artifact@v4
         with:
           name: sbom
-          path: jupyter-http-proxy.tf
+          path: ubuntu-r-sbom.tf
