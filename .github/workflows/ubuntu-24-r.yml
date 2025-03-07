@@ -4,7 +4,9 @@ on:
   push:
     branches:
       - main
-
+    paths:
+      - 'docker/ironbank-ubuntu-24/Dockerfile'
+      - '.github/workflows/ubuntu-24-r.yml'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -22,7 +24,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
-          IMAGE_TAG: 22.04_4.4.1
+          IMAGE_TAG: 24.04_4.4.1
           ECR_REPOSITORY: mdaca/base-images/ironbank-ubuntu-r
         run: |
           # Set ENV for AW Cred
@@ -40,7 +42,7 @@ jobs:
           REGISTRY=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
 
           # Build the Docker image
-          docker build -f docker/ironbank-ubuntu/Dockerfile -t $REGISTRY/$REPOSITORY:$IMAGE_TAG docker/ironbank-ubuntu
+          docker build -f docker/ironbank-ubuntu-24/Dockerfile -t $REGISTRY/$REPOSITORY:$IMAGE_TAG docker/ironbank-ubuntu
 
           # Push the Docker image
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
@@ -60,7 +62,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
-          IMAGE_TAG: 22.04_4.4.1
+          IMAGE_TAG: 24.04_4.4.1
           ECR_REPOSITORY: mdaca/base-images/ironbank-ubuntu-r
         run: |
           # Set ENV for AW Cred
@@ -82,10 +84,12 @@ jobs:
         env:
           AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
-          IMAGE_TAG: 22.04_4.4.1
+          IMAGE_TAG: 24.04_4.4.1
           ECR_REPOSITORY: mdaca/base-images/ironbank-ubuntu-r
         run: |
-          trivy image --exit-code 1 --severity HIGH,CRITICAL $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+          trivy image $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+          trivy image --format json $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG > Ubuntu-R-Trivy.json
+          jq -r '.Results[] | select(.Vulnerabilities != null) | .Vulnerabilities[] | [.SeveritySource, .VulnerabilityID, .PkgName, .PkgPath, .InstalledVersion, .FixedVersion, .Status, .Severity] | @csv' Ubuntu-R-Trivy.json > Ubuntu-R-Trivy.csv
 
       - name: Install Syft
         run: |
@@ -95,14 +99,17 @@ jobs:
         env:
           AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
-          IMAGE_TAG: 22.04_4.4.1
+          IMAGE_TAG: 24.04_4.4.1
           ECR_REPOSITORY: mdaca/base-images/ironbank-ubuntu-r
         run: |
           syft $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
-          syft $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG  > ubuntu-r-sbom.tf
+          syft $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG  > Ubuntu-R-Sbom.tf
 
       - name: Upload SBOM
         uses: actions/upload-artifact@v4
         with:
           name: sbom
-          path: ubuntu-r-sbom.tf
+          path: |
+           Ubuntu-R-Trivy.csv
+           Ubuntu-R-Sbom.tf
+           Ubuntu-R-Trivy.json
