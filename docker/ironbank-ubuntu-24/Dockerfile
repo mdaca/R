@@ -20,7 +20,7 @@ RUN apt-get update -y && apt-get install -y build-essential gfortran libreadline
     rm -rf /var/lib/apt/lists/*
 
 # Download and extract R source code
-RUN wget https://cran.r-project.org/src/base/R-4/R-${R_VERSION}.tar.gz && \
+RUN wget --no-check-certificate https://cran.r-project.org/src/base/R-4/R-${R_VERSION}.tar.gz && \
     tar -xzf R-${R_VERSION}.tar.gz && \
     cd R-${R_VERSION} && \
     ./configure --enable-R-shlib --with-blas --with-lapack && \
