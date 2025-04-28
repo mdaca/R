@@ -1,12 +1,12 @@
 # Stage 1: Build R from source
 ARG BASE_REGISTRY=201959883603.dkr.ecr.us-east-2.amazonaws.com
 ARG BASE_IMAGE_PATH=mdaca/base-images/ironbank-ubuntu
-ARG BASE_TAG=24.04
+ARG BASE_TAG=24.04_fips
 ARG BASE_IMAGE=${BASE_REGISTRY}/${BASE_IMAGE_PATH}:${BASE_TAG}
 FROM $BASE_IMAGE AS build-r
 
 # Set environment variables
-ENV R_VERSION=4.4.1
+ENV R_VERSION=4.4.3
 ENV R_HOME=/usr/local/lib/R
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=America/New_York
@@ -28,7 +28,7 @@ RUN wget https://cran.r-project.org/src/base/R-4/R-${R_VERSION}.tar.gz && \
     make install && R --version
 
 # Stage 2: Install dependencies for your R code
-FROM 201959883603.dkr.ecr.us-east-2.amazonaws.com/mdaca/base-images/ironbank-ubuntu:24.04 AS final
+FROM 201959883603.dkr.ecr.us-east-2.amazonaws.com/mdaca/base-images/ironbank-ubuntu:24.04_fips AS final
 # Set environment variables
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=America/New_York
