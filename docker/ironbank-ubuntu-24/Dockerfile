@@ -6,7 +6,7 @@ ARG BASE_IMAGE=${BASE_REGISTRY}/${BASE_IMAGE_PATH}:${BASE_TAG}
 FROM $BASE_IMAGE AS build-r
 
 # Set environment variables
-ENV R_VERSION=4.4.3
+ENV R_VERSION=4.5.1
 ENV R_HOME=/usr/local/lib/R
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=America/New_York
