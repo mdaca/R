@@ -25,7 +25,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
-          IMAGE_TAG: 24.04_4.4.3
+          IMAGE_TAG: 24.04_4.5.1
           ECR_REPOSITORY: mdaca/base-images/ironbank-ubuntu-r
         run: |
           # Set ENV for AW Cred
@@ -63,7 +63,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
-          IMAGE_TAG: 24.04_4.4.3
+          IMAGE_TAG: 24.04_4.5.1
           ECR_REPOSITORY: mdaca/base-images/ironbank-ubuntu-r
         run: |
           # Set ENV for AW Cred
@@ -85,7 +85,7 @@ jobs:
         env:
           AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
-          IMAGE_TAG: 24.04_4.4.3
+          IMAGE_TAG: 24.04_4.5.1
           ECR_REPOSITORY: mdaca/base-images/ironbank-ubuntu-r
         run: |
           trivy image $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
@@ -100,7 +100,7 @@ jobs:
         env:
           AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
-          IMAGE_TAG: 24.04_4.4.3
+          IMAGE_TAG: 24.04_4.5.1
           ECR_REPOSITORY: mdaca/base-images/ironbank-ubuntu-r
         run: |
           syft $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
