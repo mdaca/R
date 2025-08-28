@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - 4.5.1
     paths:
       - 'docker/ironbank-ubuntu-24/Dockerfile'
       - '.github/workflows/ubuntu-24-r.yml'
